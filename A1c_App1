@@ -1,0 +1,131 @@
+//*****************************************************************************************************
+//*****************************************************************************************************
+//Programmer: John Meyer
+//Date: 26/03/2020
+//Software: Microsoft Visual Studio 2019 Community Edition
+//Platform: Microsoft Windows 10 Student 64-bit
+//Purpose: Build an application that fills a two dimension array then finds the sum and average of the
+//fines
+//*****************************************************************************************************
+//*****************************************************************************************************
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
+
+namespace Assignment1cApp
+{
+    public partial class frmMain : Form
+    {
+        private StreamReader fileReader;
+        public frmMain()
+        {
+            InitializeComponent();
+        }
+        //global variable for filename
+        string fileName = "Ass1c data.txt";
+        //constant varriables for rows and columns in 2D array
+        const int ROW = 4;
+        const int COL = 2;
+        //list of ticket objects
+        List<Ticket>ticketList;
+
+        public class Ticket
+        {
+            //formats ticket objects for morning and evening
+            public int Morning { get; set; }
+            public int Evening { get; set; }
+
+            public Ticket(int Morning, int Evening)
+            {
+                this.Morning = Morning;
+                this.Evening = Evening;
+            }
+        }
+
+        private void btnAVG_Click(object sender, EventArgs e)
+        {
+            //declaring variables
+            int eveningSum = 0;
+            double average = 0;
+            //loops through ticket list and gets each evening ticket object
+            foreach (var ticket in ticketList)
+            {
+                //adds evening tickets together and assignes the result to variable 'eveningSum'
+                eveningSum += ticket.Evening;
+            }
+            //formula for average of evening tickets
+            average = (double)eveningSum / (double)ticketList.Count;
+            //sets result to text box
+            txtResult.Text = average.ToString();
+        }
+
+        private void btnSUM_Click(object sender, EventArgs e)
+        {
+            //declaring varriable
+            int sum = 0;
+            //loops through ticket list
+            foreach(var ticket in ticketList)
+            {
+                //adds evening and morning tickets together then assignes the result to variable sum
+                sum += ticket.Evening + ticket.Morning;
+            }
+            //sets result to text box
+            txtResult.Text = sum.ToString();
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            //closes application and file reader
+            fileReader.Close();
+
+            this.Close();
+        }
+
+        private void btnOpen_Click(object sender, EventArgs e)
+        {
+            //opens, reads and assigns contents of file to variable input
+            FileStream input = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+
+            fileReader = new StreamReader(input);
+
+            string[] inputFields;
+            //2D array
+            int[,] tickets = new int[ROW, COL];
+            //loops through rows in array
+            for (int x = 0; x < ROW; x++)
+            {
+                //reads tickets into inputFields and seperates items
+                string newTicket = fileReader.ReadLine();
+                inputFields = newTicket.Split(',');
+                //looping through columns
+                for (int y = 0; y < COL; y++)
+                {
+                    //converts input to integer and fills 2D array
+                    int currentValue = int.Parse(inputFields[y]);
+                    tickets[x, y] = currentValue;
+                }
+            }
+            //list of tickets
+            ticketList = new List<Ticket>();
+            //loops through 2D array
+            for (int x = 0; x < 4; x++)
+            {
+                //reads 2D array into list of ticket objects
+                Ticket ticket = new Ticket(tickets[x, 0], tickets[x, 1]);
+                ticketList.Add(ticket);
+            }
+            //checks if file was opened
+            if (ticketList != null)
+            {
+                MessageBox.Show("File opened");
+            }
+        }
+    }
+}
