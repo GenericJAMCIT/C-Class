@@ -1,0 +1,155 @@
+//*****************************************************************************************************
+//*****************************************************************************************************
+//Programmer: John Meyer
+//Date: 26/03/2020
+//Software: Microsoft Visual Studio 2019 Community Edition
+//Platform: Microsoft Windows 10 Student 64-bit
+//Purpose: Build an application that fills an array from file then sorts it and gives the user the
+//ability to search for an integer, returns the index
+//*****************************************************************************************************
+//*****************************************************************************************************
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+using System.Windows.Forms;
+
+namespace Assignment1cApp2
+{
+    public partial class frmMain : Form
+    {
+        public frmMain()
+        {
+            InitializeComponent();
+        }
+
+        private void btnRead_Click(object sender, EventArgs e)
+        {
+            //declaring string variable
+            string line;
+            //reads file
+            System.IO.StreamReader file = new System.IO.StreamReader("Ass1c data.txt");
+            //creates list
+            List<int> list = new List<int>();
+
+            while((line = file.ReadLine()) != null)
+            {
+                //adds list items
+                lstUnsorted.Items.Add(line);
+            }
+
+        }
+
+        private void btnSort_Click(object sender, EventArgs e)
+        {
+            string line;
+            System.IO.StreamReader file = new System.IO.StreamReader("Ass1c data.txt");
+            List<int> list = new List<int>();
+
+            while ((line = file.ReadLine()) != null)
+            {
+                list.Add(Convert.ToInt32(line));
+            }
+            //creates array and fills it via list
+            int[] unsortedArray = list.ToArray();
+
+            //temporary integer for use in iterative sort method
+            int fleet;
+
+            //iterative method starting at array length 0
+            for(int i = 0; i < unsortedArray.Length - 1; i++)
+            {
+                //iterates length of array +1
+                for(int j = i + 1; j < unsortedArray.Length; j++)
+                {
+                    //compares array element with next array element
+                    if (unsortedArray[i] > unsortedArray[j])
+                    {
+                        fleet = unsortedArray[i];
+                        unsortedArray[i] = unsortedArray[j];
+                        unsortedArray[j] = fleet;
+                    }
+                }
+            }
+            //prints elements of the array newly sorted
+            foreach (int value in unsortedArray)
+            {
+                lstSorted.Items.Add(value);
+            }
+        }
+        //method for searching the array
+        public static int linearSearchArray(int[] arrayToSearch, int searchNum)
+        {
+            //assigns array to variable N
+            int N = arrayToSearch.Length;
+            //loops through array items
+            for (int i = 0; i < N; i++)
+            {
+                //finds matching integer
+                if (arrayToSearch[i] == searchNum)
+                    return i;//returns value
+            }
+            return -1;
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            String line;
+            System.IO.StreamReader file = new System.IO.StreamReader("Ass1c data.txt");
+            List<int> list = new List<int>();
+
+            while ((line = file.ReadLine()) != null)
+            {
+                list.Add(Convert.ToInt32(line));
+            }
+
+            int[] unsortedArray = list.ToArray();
+            //converts input to integer
+            int input = Convert.ToInt32(txtSearch.Text);
+            //checks if input is empty
+            if (txtSearch.Text != null)
+            {
+                input = Convert.ToInt32(txtSearch.Text);
+            }
+            else 
+            { 
+                MessageBox.Show("Please enter an integer to search.");
+            }
+
+            //temporary integer for use in iterative sort method
+            int fleet;
+
+            //iterative method starting at array length 0
+            for (int i = 0; i < unsortedArray.Length - 1; i++)
+            {
+                //iterates length of array +1
+                for (int j = i + 1; j < unsortedArray.Length; j++)
+                {
+                    //compares array element with next array element
+                    if (unsortedArray[i] > unsortedArray[j])
+                    {
+                        fleet = unsortedArray[i];
+                        unsortedArray[i] = unsortedArray[j];
+                        unsortedArray[j] = fleet;
+                    }
+                }
+            }
+            //uses linear search method on array
+            int result = linearSearchArray(unsortedArray, input);
+            //checks what is returned and prints error if nothing was found.
+            if (result != -1)
+            {
+                MessageBox.Show("Item found at index " + Convert.ToString(result));
+            }
+            else
+            {
+                MessageBox.Show("Integer not found");
+            }
+        }
+    }
+}
