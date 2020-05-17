@@ -1,0 +1,79 @@
+//*****************************************************************************************************
+//*****************************************************************************************************
+//Programmer: John Meyer
+//Date: 26/03/2020
+//Software: Microsoft Visual Studio 2019 Community Edition
+//Platform: Microsoft Windows 10 Student 64-bit
+//Purpose: Build an application that fills and displays an structure variable via user input
+//*****************************************************************************************************
+//*****************************************************************************************************
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Assignment1bApp
+{
+    public partial class FrmMain : Form
+    {
+        //creates structure of game
+        struct Games
+        {
+            //declaring variables
+            public string Title;
+            public string System;
+            public int ReleaseDate;
+            public decimal Value;
+
+            public override string ToString()
+            {
+                //method to override string format
+                return string.Format("{0}, {1}, {2}, {3}", Title, System, ReleaseDate, Value);
+            }
+        }
+
+        public FrmMain()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            //creates instance of game structure
+            Games myGame;
+            //fills struct from input
+            myGame.Title = txtTitle.Text;
+            myGame.System = txtSystem.Text;
+            myGame.ReleaseDate = Convert.ToInt32(txtReleaseDate.Text);
+            myGame.Value = Convert.ToDecimal(txtValue.Text);
+            //adds items to list
+            lstGames.Items.Add(myGame.ToString());
+            //clears text boxes for further input
+            txtTitle.Clear();
+            txtSystem.Clear();
+            txtReleaseDate.Clear();
+            txtValue.Clear();
+        }
+
+    private void btnExit_Click(object sender, EventArgs e)
+        {
+            //closes application
+            this.Close();
+        }
+    }
+}
