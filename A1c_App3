@@ -1,0 +1,78 @@
+//*****************************************************************************************************
+//*****************************************************************************************************
+//Programmer: John Meyer
+//Date: 26/03/2020
+//Software: Microsoft Visual Studio 2019 Community Edition
+//Platform: Microsoft Windows 10 Student 64-bit
+//Purpose: Build an application that finds the max value in a one dimensional array
+//*****************************************************************************************************
+//*****************************************************************************************************
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Assignment1cApp3
+{
+    public partial class frmMain : Form
+    {
+        public frmMain()
+        {
+            InitializeComponent();
+            //loads file upon startup
+            loadData();
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnMax_Click(object sender, EventArgs e)
+        {
+            //declaring string variable
+            string line;
+            //reads file
+            System.IO.StreamReader file = new System.IO.StreamReader("Ass1c data.txt");
+            //creates list
+            List<int> list = new List<int>();
+            //loops through till end of file
+            while ((line = file.ReadLine()) != null)
+            {
+                //converts list items to integer
+                list.Add(Convert.ToInt32(line));
+            }
+            //creates array from list
+            int[] unsortedArray = list.ToArray();
+            //LINQ query for maximum value
+            var max_val = (from c in unsortedArray
+                           where c == unsortedArray.Max()
+                           select c).Single();
+
+            //int maxNumber = unsortedArray.Max();  // maxNumber: 8
+            txtResult.Text = Convert.ToString(max_val);
+        }
+        
+        //load data method
+        public void loadData()
+        {
+            //declaring string variable
+            string line;
+            //reads file
+            System.IO.StreamReader file = new System.IO.StreamReader("Ass1c data.txt");
+            //creates list
+            List<int> list = new List<int>();
+
+            while ((line = file.ReadLine()) != null)
+            {
+                //adds items to list
+                lstArray.Items.Add(line);
+            }
+        }
+    }
+}
