@@ -1,0 +1,71 @@
+//*****************************************************************************************************
+//*****************************************************************************************************
+//Programmer: John Meyer
+//Date: 26/03/2020
+//Software: Microsoft Visual Studio 2019 Community Edition
+//Platform: Microsoft Windows 10 Student 64-bit
+//Purpose: Build an application that subtracts two integers input by the user
+//*****************************************************************************************************
+//*****************************************************************************************************
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace A1aSubstractionApp
+{
+    public partial class frmMain : Form
+    {
+        //method for subtraction
+        static int Subtract(ref int a, ref int b)
+        {
+            return a - b;
+        }
+        public frmMain()
+        {
+            InitializeComponent();
+        }
+
+        private void btnSubtract_Click(object sender, EventArgs e)
+        {
+            //try..catch block in case the text boxes aren't filled
+            try
+            {
+                //assigning two variables to the text box inputs converted to integer
+                int value1 = Convert.ToInt32(txtInput1.Text);
+                int value2 = Convert.ToInt32(txtInput2.Text);
+
+                //pass by reference the subtraction function
+                int result = Subtract(ref value1, ref value2);
+
+                //displaying the result to a message box
+                MessageBox.Show("Subtraction result = " + result.ToString());
+                //clears text boxes for another input
+                txtInput1.Clear();
+                txtInput2.Clear();
+            }
+            catch (Exception ex)
+            {
+                //catches that the text boxes aren't fill and throws an error
+                MessageBox.Show("Please enter two integers");
+            }
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            //closes form via exit button
+            this.Close();
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+
+        }
+
+    }
+}
